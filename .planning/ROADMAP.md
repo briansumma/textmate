@@ -11,7 +11,7 @@ Phase 1 makes a clean arm64 build from a fresh checkout. Phase 2 proves that the
 **Phase Numbering:**
 - Integer phases (1, 2, 3): Planned milestone work
 
-- [ ] **Phase 1: Apple Silicon Build** - A clean checkout builds a runnable arm64 TextMate.app with documented setup
+- [x] **Phase 1: Apple Silicon Build** - A clean checkout builds a runnable arm64 TextMate.app with documented setup (completed 2026-10-19)
 - [ ] **Phase 2: Launch and Run Verification** - The built app launches and keeps its editing, bundle, HTML output, and preference features
 - [ ] **Phase 3: Remove Network Contacts and Sign** - Update and crash-upload contacts are removed, and the final build is ad-hoc signed and re-verified
 
@@ -28,7 +28,7 @@ Phase 1 makes a clean arm64 build from a fresh checkout. Phase 2 proves that the
   3. The README "Building" section names `git submodule update --init --recursive`. After that command, `git submodule status | grep -c '^-'` prints `0`.
   4. `plutil -extract LSMinimumSystemVersion raw` prints `26.7.1`, and `vtool -show-build` reports minimum OS 26.7.1. The 10.12 floor is gone.
 
-**Plans**: 3/3 plans executed
+**Plans**: 3/3 plans complete
 - [x] 01-01-PLAN.md
 - [x] 01-02-PLAN.md
 - [x] 01-03-PLAN.md
@@ -77,6 +77,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Apple Silicon Build | 3/3 | In Progress | - |
+| 1. Apple Silicon Build | 3/3 | Complete    | 2026-10-19 |
 | 2. Launch and Run Verification | 0/TBD | Not started | - |
 | 3. Remove Network Contacts and Sign | 0/TBD | Not started | - |
