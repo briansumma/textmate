@@ -11,19 +11,19 @@ requires:
 provides:
   - Spike: io runner built and run outside the build system (23 passed, 1 failed, log holds the count line)
   - Test baseline table for the 25 test directories: 15 ran, 10 un-baselined
-  - Checkpoint: 15 counted rows, below the 20-row minimum
+  - Minimum decision: 15 counted rows accepted as the final baseline (user decision; the 20-row minimum is lowered to 15)
 affects: [phase 3 regression comparison]
 
 # Actuals (#2632): no tracked file changed, so chars/4 over the tracked diff is 0
 actuals:
   tokens: 0
   tasks: 3
-  commits: 0
+  commits: 1       # fff82bcb, the checkpoint docs commit; no task commits (no tracked file changed)
 
 # Commit ledger (#3968), measured from HEAD at plan start
-commits: 0
+commits: 1
 plan_head_before: c22b37b7d5d716e2962e39fd3bc5e5d420768a0b
-plan_head_after: c22b37b7d5d716e2962e39fd3bc5e5d420768a0b
+plan_head_after: fff82bcbdc98a78aa050e327dbf9f82b90ed1f47
 
 # Tech tracking
 tech-stack:
@@ -40,7 +40,7 @@ key-files:
   modified: []
 
 key-decisions:
-  - "Plan stops at a checkpoint. 15 rows ran, the 20-row minimum is not met. The method was not changed to reach 20."
+  - "Plan stopped at a checkpoint with 15 rows ran against a 20-row minimum. The user then accepted 15 as the final baseline. The method was not changed to reach 20 (see Minimum Decision)."
   - "Baseline runs on the post-BUILD tree at 1c0ca4f9, not on 346b52b1 (see Test baseline)."
 
 patterns-established:
@@ -50,12 +50,12 @@ requirements-completed: []
 
 duration: not recorded (record_start_time step was not run)
 completed: 2026-10-19
-status: checkpoint
+status: complete
 ---
 
 # Phase 1 Plan 03: Test baseline Summary
 
-**Test baseline on the post-BUILD tree at 1c0ca4f9 counted 15 of 25 test directories with runners built outside the build system. The 20-row minimum is not met, so the plan stops at a checkpoint.**
+**Test baseline on the post-BUILD tree at 1c0ca4f9 counted 15 of 25 test directories with runners built outside the build system. The 20-row minimum was not met, and the user accepted 15 as the final baseline (see Minimum Decision).**
 
 ## Performance
 
@@ -77,6 +77,18 @@ The 10 rows that are not counted, with their causes:
 | Runtime exit in product code (`NSInvalidArgumentException` from `command::runner_t::launch`, or SIGBUS) | command, editor, file, cf | 4 |
 
 Fixing the three harness flag cases would give 18 counted rows, still below 20. Reaching 20 would need a change to the plan's rules: how the `cxx_tests` `.mm` files are handled, or how C-only directories get C++ flags. That is a decision for the user. The method was not changed to reach the threshold.
+
+## Minimum Decision
+
+- **Plan minimum:** 20 counted rows. Task 3 set the threshold at 20 in its action and its verify gate.
+- **User decision:** accept 15 counted rows as the final baseline. The minimum is 15, not 20.
+- **Reason:** the 10 uncounted rows cannot be run by the current method without changing the plan's rules. Their causes are:
+  - Harness flag artifacts (buffer, layout, HTMLOutput): the flags borrowed from a directory's objects miss an include path, or carry the wrong Objective-C mode.
+  - Onigmo: its only objects are C, so their flags cannot compile a C++ runner (`-std=c99`).
+  - ns and OakAppKit: gen_test places the `.mm` test bodies inside a namespace, which Objective-C declarations do not allow.
+  - command, editor, and file: `NSInvalidArgumentException` at runtime, thrown from product code.
+  - cf: SIGBUS during the run.
+- **Effect:** the 25-row table above is the final baseline. The 10 uncounted rows stay `n/a` and stay listed under Un-baselined. Phase 3 compares against the 15 counted rows. No count was derived for any uncounted row.
 
 ## Spike
 
@@ -229,7 +241,7 @@ Checked before this SUMMARY was written:
 
 ## Next Phase Readiness
 
-- The baseline needs a user decision before it can reach 20 rows. Options: (a) change the handling of the `cxx_tests` `.mm` files, (b) give C-only directories C++ flags, or (c) record the 15-row baseline as final and let Phase 3 compare against it.
+- The test baseline is final at 15 counted rows (see Minimum Decision). Phase 3 compares against those rows.
 - Phase 2 (BUILD-05) owns the deprecated-API warnings.
 
 ---

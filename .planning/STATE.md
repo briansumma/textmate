@@ -3,16 +3,16 @@ gsd_state_version: "1.0"
 current_phase: 1
 current_phase_name: Apple Silicon Build
 status: executing
-stopped_at: "01-03 checkpoint: 15 of 25 test rows ran (minimum 20)"
-last_updated: "2026-10-19T19:37:14.532Z"
+stopped_at: "01-03 complete: user accepted 15 of 25 test rows as the final baseline (20-row minimum lowered to 15)"
+last_updated: "2026-10-19T19:40:10.972Z"
 last_activity: 2026-10-19
 last_activity_desc: Phase 1 execution started
-state_head: c22b37b7d5d716e2962e39fd3bc5e5d420768a0b
+state_head: fff82bcbdc98a78aa050e327dbf9f82b90ed1f47
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 3
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -83,7 +83,6 @@ None yet.
 
 - Do not copy `local-orig.rave` to `local.rave`. It sets a Developer ID identity and a notarize step (SIGN-01).
 - Homebrew package versions are not pinned yet. BUILD-02 requires them in the README "Building" section.
-- Phase 1 plan 01-03 checkpoint: test baseline has 15 of 25 directories ran with integer Pass and Fail; the 20-row minimum is not met. Decision needed on the gui .mm files, Onigmo C flags, and the runner flag rules.
 
 ## Deferred Items
 
@@ -95,6 +94,6 @@ Items acknowledged and deferred at milestone close, most recent first:
 
 ## Session Continuity
 
-Last session: 2026-10-19T19:37:14.515Z
-Stopped at: 01-03 checkpoint: 15 of 25 test rows ran (minimum 20)
+Last session: 2026-10-19T19:40:10.951Z
+Stopped at: 01-03 complete: user accepted 15 of 25 test rows as the final baseline (20-row minimum lowered to 15)
 Resume file: None
