@@ -135,24 +135,24 @@ Which phases cover which requirements. Filled during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BUILD-01 | — | Pending |
-| BUILD-02 | — | Pending |
-| BUILD-03 | — | Pending |
-| BUILD-04 | — | Pending |
-| BUILD-05 | — | Pending |
-| RUN-01 | — | Pending |
-| RUN-02 | — | Pending |
-| RUN-03 | — | Pending |
-| RUN-04 | — | Pending |
-| RUN-05 | — | Pending |
-| UPD-01 | — | Pending |
-| PRIV-01 | — | Pending |
-| SIGN-01 | — | Pending |
+| BUILD-01 | Phase 1 | Pending |
+| BUILD-02 | Phase 1 | Pending |
+| BUILD-03 | Phase 1 | Pending |
+| BUILD-04 | Phase 1 | Pending |
+| BUILD-05 | Phase 2 | Pending |
+| RUN-01 | Phase 2 | Pending |
+| RUN-02 | Phase 2 | Pending |
+| RUN-03 | Phase 2 | Pending |
+| RUN-04 | Phase 2 | Pending |
+| RUN-05 | Phase 2 | Pending |
+| UPD-01 | Phase 3 | Pending |
+| PRIV-01 | Phase 3 | Pending |
+| SIGN-01 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 13 total
-- Mapped to phases: 0 (roadmap pending)
-- Unmapped: 13
+- Mapped to phases: 13
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-10-19*
