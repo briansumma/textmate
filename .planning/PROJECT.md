@@ -41,6 +41,8 @@ TextMate builds for Apple Silicon, launches, opens and saves files, and runs its
 - `disable-library-validation` entitlement. Reason: stays unchanged, same as security hardening.
 - Any `CONCERNS.md` item that no requirement names. Reason: in scope only if a requirement or an Open decision names it.
 - Replacing legacy WebView or ODB code. Reason: change only if a BUILD-05 test requires it.
+- Read-only save error reporting. Reason: the current code shows an error alert, and no read-only save test exists.
+- Bundle install path (`OakDownloadManager.mm`). Reason: it runs only when a bundle is installed. The archive reaches `tar` before the signature check. Accepted risk.
 
 ## Context
 
