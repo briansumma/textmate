@@ -8,7 +8,7 @@
 - **Current macOS:** macOS 26.7.1 (build 25G241). Xcode 27.1 (27A9275) with SDK 27.0.
 - **Clean checkout:** a new, empty directory created by `git clone --recursive` of `develop` at the commit under test. It contains no build output and no `local.rave`.
 - **Launches:** the built app starts, shows its main window, and writes no new crash report to `~/Library/Logs/DiagnosticReports` within 30 seconds of starting.
-- **Bundle set:** the 8 bundles in `~/Library/Application Support/TextMate/Bundles` (C, HTML, Perl, Python, Shell Script 2, Shell Script, Text, Themes) plus the bundled `Avian.tmbundle`. The 67 managed bundles are excluded (see Open decisions).
+- **Bundle set:** the 8 bundles in `~/Library/Application Support/TextMate/Bundles` (C, HTML, Perl, Python, Shell Script 2, Shell Script, Text, Themes) plus the bundled `Avian.tmbundle`. These run commands under RUN-03. The 60 managed-only bundles in `~/Library/Application Support/TextMate/Managed/Bundles` load under RUN-03 without running commands. The 7 managed bundles that share a name with the user set are excluded.
 - **Removed:** the code path, menu item, and preference control are absent from the built app. A test proves it.
 - **Built app:** the `TextMate.app` produced by `ninja TextMate`. Locate it with `find . -name TextMate.app -path "*/build*" -print -quit`.
 
@@ -37,9 +37,10 @@ Requirements for the personal fork. No new features are in scope. Each requireme
   - Pass: `plutil` prints `26.7.1`, and `vtool` reports the minimum OS version 26.7.1. Compare the numbers, since `vtool` formats them on its own.
 
 - [ ] **BUILD-05**: Deprecated APIs are migrated only where the build or a RUN test fails on the current macOS. A migration must not change behavior.
-  - Call sites in scope: `WebView` in `Frameworks/HTMLOutput`, `NSURLConnection` in `OakHTMLOutputView.mm:199`, and `NSTask.launchPath` in `Frameworks/SoftwareUpdate/src/SoftwareUpdate.mm:557` and `OakDownloadManager.mm`.
-  - Test: for each call site, the RUN test that exercises it (RUN-03 to RUN-05) passes before and after the change.
-  - Pass: each call site is unchanged with its RUN test passing, or migrated with the same RUN test passing. Any call site outside this list is an Open decision.
+  - Call sites in scope: `WebView` in `Frameworks/HTMLOutput`; `NSURLConnection` in `Frameworks/HTMLOutput/src/OakHTMLOutputView.mm:199`; `NSTask.launchPath` in `Frameworks/SoftwareUpdate/src/SoftwareUpdate.mm:557`; `Gestalt` in `Shared/include/oak/compat.h:8-16`; `Get1Resource` in `Frameworks/io/src/resource.cc:34`; `GetIconRef` in `Frameworks/TMFileReference/src/TMFileReference.mm:257-260`; WebView registration at launch in `Frameworks/OakCommand/src/OakCommand.mm:679`; and Apple Events and ODB in `Applications/TextMate/src/ODBEditorSuite.mm`, not yet checked.
+  - Compile-only: `AuthorizationExecuteWithPrivileges` in `Shared/include/oak/compat.h:18-21`, `Frameworks/Preferences/src/TerminalPreferences.mm:50`, and `Frameworks/authorization/src/server.cc:26`. Its check is the mate install prompt under RUN-01.
+  - Test: for each call site, run the RUN test that exercises it. Use RUN-01 for launch-time sites, RUN-04 for the HTML output paths, and RUN-05 for About and Preferences.
+  - Pass: each listed site is unchanged and its test passes, or it is migrated and the same test passes. Sites not listed stay unchanged unless a RUN test fails.
 
 ### Run
 
@@ -51,9 +52,9 @@ Requirements for the personal fork. No new features are in scope. Each requireme
   - Test: create `runtest-utf8.txt` containing a known line. Open it in the built app with File > Open. Type a second line. Save. Then `shasum -a 256 runtest-utf8.txt`, and compare the result with the hash of the expected text recorded before the test.
   - Pass: the saved file matches the expected text, and the hash matches. Reopening the file shows both lines.
 
-- [ ] **RUN-03**: Each bundle in the bundle set runs its commands
-  - Test: for each bundle in the bundle set, run one command the bundle declares. Record the exit status and the output target. For a bundle with no commands, load one of its grammar, theme, or snippets in a new document.
-  - Pass: each command exits 0 and its output appears in the target the command declares. Each bundle with no commands loads without error. A missing interpreter (for example Python or Perl) fails the test and is recorded as an environment failure.
+- [ ] **RUN-03**: Each bundle in the bundle set runs its commands. Each managed-only bundle loads.
+  - Test: for each bundle in the bundle set, run one command the bundle declares. Record the exit status and the output target. For a bundle with no commands, load one of its grammar, theme, or snippets in a new document. For each of the 60 managed-only bundles, load one of its grammar, theme, or snippets in a new document. Do not run their commands.
+  - Pass: each command exits 0 and its output appears in the target the command declares. Each bundle with no commands loads without error. All 60 managed-only bundles load (60 of 60). A missing interpreter (for example Python or Perl) fails the test and is recorded as an environment failure.
 
 - [ ] **RUN-04**: A bundle command whose output is HTML shows that output in the HTML output window
   - Test: run one command from `HTML.tmbundle` whose output is HTML.
@@ -65,9 +66,15 @@ Requirements for the personal fork. No new features are in scope. Each requireme
 
 ### Update Check
 
-- [ ] **UPD-01**: The app's online update check is removed. The app does not contact `api.textmate.org` for its own update check.
-  - Test: check the menu bar for "Check for Update" and the Preferences pane for "Check Now". Then capture DNS during a run of RUN-01 to RUN-05, for example `sudo tcpdump -l -n -i any port 53 | grep api.textmate.org`.
-  - Pass: neither the menu item nor the button exists, and the capture prints no `api.textmate.org` lookup. The bundle index, the bundle updater, and the crash upload are covered only by the Open decisions below.
+- [ ] **UPD-01**: The app contacts no `api.textmate.org` host for updates. The app update check, the bundle index poll and its checkbox, the bundle updater, the `bl` update path, and the `can_reach_host` probe are removed.
+  - Test: run `grep -rn 'REST_API' Frameworks Applications`. Check the menu bar for "Check for Update", the Preferences pane for "Check Now" and the bundle-update checkbox. Then capture DNS during a run of RUN-01 to RUN-05, for example `sudo tcpdump -l -n -i any port 53 | grep api.textmate.org`. The capture needs an administrator password.
+  - Pass: `grep` prints nothing. The menu item, the button, and the checkbox are absent. The capture prints no `api.textmate.org` lookup.
+
+### Privacy
+
+- [ ] **PRIV-01**: The crash reporter uploads no report, and the "Submit to MacroMates" preference is removed.
+  - Test: run `grep -rn 'REST_API' Frameworks/CrashReporter Applications/TextMate/src`. Check the Preferences pane for "Submit to MacroMates".
+  - Pass: `grep` prints nothing, and the checkbox is absent.
 
 ### Signing
 
@@ -99,10 +106,12 @@ None. Deferred work is not planned.
 | `disable-library-validation` entitlement | Stays unchanged; `Applications/TextMate/Entitlements.plist` is not edited. Same reason as security hardening |
 | Any `CONCERNS.md` item not named in a requirement | Not in scope unless a requirement or an Open decision names it |
 | Replacing legacy WebView or ODB code | Change only if a test under BUILD-05 requires it |
+| Read-only save error reporting | The current code shows an error alert, and no read-only save test exists (Decision 4) |
+| Bundle install path (`OakDownloadManager.mm`) | Runs only when a bundle is installed. The archive reaches `tar` before the signature check. Accepted risk (Decision 5) |
 
 ## Decisions
 
-Accepted on 2026-10-19. Each decided option is the Recommended option from the review by susan-calvin. The requirement text that follows from these decisions is listed under Follow-up text changes. That text is not yet updated.
+Accepted on 2026-10-19. Each decided option is the Recommended option from the review by susan-calvin. The requirement text that follows from these decisions is applied in v1 Requirements and Out of Scope.
 
 | # | Item | Options | Decided | Reason | Source |
 |---|------|---------|-------------|--------|--------|
@@ -119,15 +128,6 @@ Accepted on 2026-10-19. Each decided option is the Recommended option from the r
 | 11 | WebView registration at launch | Migrate, or leave unchanged | Leave unchanged | Launch runs it, so RUN-01 covers it. Migrate only if RUN-01 or RUN-04 fails. | `OakCommand.mm:679` |
 | 12 | Apple Events and ODB (`ODBEditorSuite.mm`) | Migrate, or leave unchanged | Leave unchanged | Not checked. Confirm the build includes it before deciding. | `ODBEditorSuite.mm` |
 | 13 | `can_reach_host` probe on file open contacts `api.textmate.org` | Remove the probe, or keep | Remove | It may trigger a DNS lookup of the update host while a file opens. Whether it fires is inferred. Confirm with the UPD-01 DNS capture. | `DocumentWindowController.mm:1016`, `:45-59` |
-
-## Follow-up text changes
-
-These decisions change requirement text. The text below is not yet updated.
-
-- **UPD-01:** name the bundle poll, its checkbox, the updater source, the `bl` path, and the `can_reach_host` probe (decisions 1 and 13). Add the crash upload removal, with its own requirement ID (decision 2).
-- **BUILD-05:** remove `OakDownloadManager.mm` from the call-site list (decision 5). Add the unlisted sites with the rule "unchanged unless a test fails" (decisions 8 to 12). Mark `AuthorizationExecuteWithPrivileges` as compile-only verified (decision 3).
-- **RUN-03:** add the 60 managed-only bundles as a load check, with pass rule "60 of 60 load" (decision 6). Update the Bundle set definition, which still excludes them.
-- **Out of Scope:** add the read-only save item (decision 4) and the bundle install path (decision 5).
 
 ## Traceability
 
@@ -146,13 +146,14 @@ Which phases cover which requirements. Filled during roadmap creation.
 | RUN-04 | — | Pending |
 | RUN-05 | — | Pending |
 | UPD-01 | — | Pending |
+| PRIV-01 | — | Pending |
 | SIGN-01 | — | Pending |
 
 **Coverage:**
-- v1 requirements: 12 total
+- v1 requirements: 13 total
 - Mapped to phases: 0 (roadmap pending)
-- Unmapped: 12
+- Unmapped: 13
 
 ---
 *Requirements defined: 2026-10-19*
-*Last updated: 2026-10-19 after red-team revision*
+*Last updated: 2026-10-19 after applying decisions*
