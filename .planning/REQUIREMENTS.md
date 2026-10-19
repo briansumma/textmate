@@ -10,7 +10,7 @@
 - **Launches:** the built app starts, shows its main window, and writes no new crash report to `~/Library/Logs/DiagnosticReports` within 30 seconds of starting.
 - **Bundle set:** the 8 bundles in `~/Library/Application Support/TextMate/Bundles` (C, HTML, Perl, Python, Shell Script 2, Shell Script, Text, Themes) plus the bundled `Avian.tmbundle`. These run commands under RUN-03. The 60 managed-only bundles in `~/Library/Application Support/TextMate/Managed/Bundles` load under RUN-03 without running commands. The 7 managed bundles that share a name with the user set are excluded.
 - **Removed:** the code path, menu item, and preference control are absent from the built app. A test proves it.
-- **Built app:** the `TextMate.app` produced by `ninja TextMate`. Locate it with `find . -name TextMate.app -path "*/build*" -print -quit`.
+- **Built app:** the `TextMate.app` produced by `ninja TextMate`. Locate it with `find ~/build/textmate -name TextMate.app -print -quit`.
 
 ## v1 Requirements
 
@@ -19,7 +19,7 @@ Requirements for the personal fork. No new features are in scope. Each requireme
 ### Build
 
 - [ ] **BUILD-01**: Build `TextMate.app` for arm64 on the current macOS with the current Xcode from a clean checkout
-  - Test: `ninja TextMate` exits 0. Then `lipo -archs "$(find . -path '*TextMate.app/Contents/MacOS/TextMate' -print -quit)"`.
+  - Test: `ninja TextMate` exits 0. Then `lipo -archs "$(find ~/build/textmate -path '*TextMate.app/Contents/MacOS/TextMate' -print -quit)"`.
   - Pass: the build exits 0, and `lipo` prints `arm64`.
 
 - [ ] **BUILD-02**: `configure` finds Homebrew dependencies under `/opt/homebrew` without hand-editing `local.rave`
