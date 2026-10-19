@@ -6,23 +6,44 @@ function error () { printf >&2 "%s\n\nPlease see README.md for build instruction
 # = Check required dependencies =
 # ===============================
 
-for dep in capnp ninja ragel multimarkdown pgrep pkill; do
+for dep in capnp ninja ragel multimarkdown; do
+	which -s "$dep" || error "*** dependency missing: ‘${dep}’. Install with: brew install ${dep}"
+done
+
+for dep in pgrep pkill; do
 	which -s "$dep" || error "*** dependency missing: ‘${dep}’."
 done
+
+# Homebrew prefix: ask brew, fall back to the Apple Silicon default.
+prefix=""
+if which -s brew; then
+	prefix="$(brew --prefix 2>/dev/null)"
+fi
+if [[ -z "$prefix" ]]; then
+	prefix="/opt/homebrew"
+fi
 
 if [[ -e local.rave ]]; then
 	echo >&2 "Skipping writing ‘local.rave’: File already exists"
 else
-	echo >> local.rave 'add FLAGS    "-I/usr/local/include"'
-	echo >> local.rave 'add LN_FLAGS "-L/usr/local/lib"'
-
-	for hdr in boost/{crc,variant}.hpp capnp/{message,serialize-packed}.h sparsehash/dense_hash_map; do
-		test -f "/usr/local/include/${hdr}" || error "*** dependency missing: ‘/usr/local/include/${hdr}’. Install dependency and/or update ‘local.rave’ with correct path."
+	# Checks run before the first write, so a failed run leaves no partial local.rave.
+	for hdr in boost/crc.hpp boost/variant.hpp; do
+		test -f "${prefix}/include/${hdr}" || error "*** dependency missing: ‘${prefix}/include/${hdr}’. Install with: brew install boost"
 	done
 
+	for hdr in capnp/message.h capnp/serialize-packed.h; do
+		test -f "${prefix}/include/${hdr}" || error "*** dependency missing: ‘${prefix}/include/${hdr}’. Install with: brew install capnp"
+	done
+
+	test -f "${prefix}/include/sparsehash/dense_hash_map" || error "*** dependency missing: ‘${prefix}/include/sparsehash/dense_hash_map’. Install with: brew install google-sparsehash"
+
+	# Exact .dylib files only: a glob matches several files on Homebrew and breaks test -f.
 	for lib in capnp kj; do
-		test -f "/usr/local/lib/lib${lib}."* || error "*** dependency missing: ‘/usr/local/lib/lib${lib}.*’. Install dependency and/or update ‘local.rave’ with correct path."
+		test -f "${prefix}/lib/lib${lib}.dylib" || error "*** dependency missing: ‘${prefix}/lib/lib${lib}.dylib’. Install with: brew install capnp"
 	done
+
+	echo >> local.rave "add FLAGS    \"-I${prefix}/include\""
+	echo >> local.rave "add LN_FLAGS \"-L${prefix}/lib\""
 fi
 
 # ========================

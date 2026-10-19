@@ -39,6 +39,17 @@ brew install boost capnp google-sparsehash multimarkdown ninja ragel
 sudo port install boost capnproto multimarkdown ninja ragel sparsehash
 ```
 
+Versions used for this build, from `brew list --versions`:
+
+```text
+boost 1.92.0
+capnp 1.5.0_1
+google-sparsehash 2.0.4
+multimarkdown 6.8.0
+ninja 1.13.2
+ragel 6.11
+```
+
 After installing dependencies, make sure you have a full checkout (including submodules) and then run `./configure` followed by `ninja`, for example:
 
 ```sh
