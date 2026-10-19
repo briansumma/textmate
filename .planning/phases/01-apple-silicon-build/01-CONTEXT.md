@@ -33,6 +33,11 @@ Requirements in scope: BUILD-01, BUILD-02, BUILD-03, BUILD-04.
 - The submodule command `git submodule update --init --recursive` goes in the existing `# Building` section of `README.md`, before the `./configure` step.
 - Commits follow one commit per requirement ID. Each commit message names its requirement ID, as the feature-freeze check requires.
 
+### Regression Baseline (cross-cutting, overrides the original wording)
+- The original Regression wording (`ninja <framework>/test` at baseline commit `346b52b1`) cannot be met. `bin/rave` emits no test target, so `ninja <framework>/test` has no target to run.
+- The chosen method is option b. The runners that `bin/gen_test` writes are built and run outside the build system, on the post-BUILD tree, with no tracked change.
+- The baseline is recorded in `01-03-SUMMARY.md` with the clean checkout HEAD SHA.
+
 ### Claude's Discretion
 - None. All grey areas were accepted as recommended.
 

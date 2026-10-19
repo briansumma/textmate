@@ -89,7 +89,7 @@ None. Deferred work is not planned.
 
 ## Cross-cutting checks
 
-- **Regression:** run the test targets that build at the baseline commit `346b52b1`, using `ninja <framework>/test` for each framework with a `tests` directory. Record the pass and fail list on the first successful build. The list after the work must show no new failures.
+- **Regression:** run the test targets that build at the baseline commit `346b52b1`, using `ninja <framework>/test` for each framework with a `tests` directory. Record the pass and fail list on the first successful build. The list after the work must show no new failures. The method is option b (runners built outside the build system on the post-BUILD tree, with no tracked change), as recorded in `.planning/phases/01-apple-silicon-build/01-CONTEXT.md` under "Regression Baseline".
 - **Feature freeze:** `git diff 346b52b1 -- . ':(exclude).planning'` lists the changed files. Each changed file maps to one requirement ID in the commit message. Pass: no changed file lacks an ID.
 - **Local only:** `git push` to `origin` fails, or `origin` is removed. Pass: no push reaches a remote.
 
