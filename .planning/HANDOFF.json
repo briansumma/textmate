@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-10-19T23:19:13.794Z",
+  "phase": "2",
+  "phase_name": "Launch and Run Verification",
+  "phase_dir": ".planning/phases/02-launch-and-run-verification",
+  "plan": 5,
+  "task": 1,
+  "total_tasks": 6,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": 1, "name": "02-01 RUN-01 tracer", "status": "done", "commit": "45070222"},
+    {"id": 2, "name": "02-03 RUN-02 fixture and BUILD-05 preflight", "status": "done", "commit": "de98eccb"},
+    {"id": 3, "name": "02-02 RUN-03 inventories and headless runs", "status": "done", "commit": "b073ef82"},
+    {"id": 4, "name": "02-04 RUN-02 save and RUN-04 HTML GUI checks", "status": "done", "commit": "05e4e7dd"}
+  ],
+  "remaining_tasks": [
+    {"id": 5, "name": "02-05 RUN-03 GUI output targets and managed loads; RUN-05 allowExpandingLinks flip", "status": "not_started"},
+    {"id": 6, "name": "02-06 close BUILD-05, run log, decision on site a", "status": "not_started"}
+  ],
+  "blockers": [
+    {"description": "BUILD-05 site a (Frameworks/HTMLOutput/src/OakHTMLOutputView.mm:199) is not exercised. RUN-04 page has no link in the captured area. Needs Brian's decision in plan 02-06.", "type": "human_action", "workaround": "Scroll the About Persistent Includes page to check for a link, or accept site a as not exercised."},
+    {"description": "RUN-01 reach for BUILD-05 site c (Gestalt) is unresolved (user_agent.cc:33 via download.cc:151; AppController.mm:716).", "type": "technical", "workaround": "Only matters if a Gestalt migration is triggered in plan 02-06."},
+    {"description": "A-16 local-fetch route into ~/src/textmate-clean is an open item from plan 02-03 revision. Confirm before plan 02-06 uses it.", "type": "human_action", "workaround": "Ask Brian in plan 02-06 or record as not used."}
+  ],
+  "async_jobs": [],
+  "human_actions_pending": [
+    {"action": "Run plan 02-05 GUI steps: RUN-03 bundle output targets, 55 managed-only loads (5 are FAIL under B1), and the RUN-05 checkbox 'Show links as expandable' in Preferences > Projects (starts unchecked, check it, relaunch, check it persists, then restore to unchecked).", "context": "Plan 02-05 needs Brian at the Mac. Use the built app only, never /Applications/TextMate.app. Use a throwaway file for Avian, Shell Script, and Python.", "blocking": true},
+    {"action": "Decide BUILD-05 site a in plan 02-06 (accept as not exercised, or name a test that reaches it).", "context": "A1 covers only sites b, d, e, g. Site a is not covered.", "blocking": true}
+  ],
+  "decisions": [
+    {"decision": "SC3: five managed-only bundles with no load file recorded as FAIL with cause 'no grammar, theme, or snippet file'. Phase 2 stays OPEN for SC3.", "rationale": "Brian chose B1. Requirement wording unchanged.", "phase": "2"},
+    {"decision": "BUILD-05 sites b, d, e, g recorded as ACCEPTED-DEVIATION, not PASS.", "rationale": "Brian chose A1. Site a still open.", "phase": "2"},
+    {"decision": "Failing RUN tests are migrated after all GUI sessions, one site at a time.", "rationale": "Brian chose B-confirm.", "phase": "2"},
+    {"decision": "GUI result decides each RUN verdict. Headless exit code is a note only.", "rationale": "Brian chose GUI decides.", "phase": "2"},
+    {"decision": "Headless runs keep the fixed PATH from the plan, labelled headless-only.", "rationale": "Brian chose to keep the fixed PATH. Most ENV-FAIL results come from this.", "phase": "2"},
+    {"decision": "RUN-03 risky GUI commands (Avian Compress, Shell Script Execute, Python) run on a throwaway file in ~/runtests/work.", "rationale": "Brian chose throwaway file. Protects his documents.", "phase": "2"},
+    {"decision": "RUN-05 preference is allowExpandingLinks (Projects pane checkbox, default off). lineNumbers and showFileExtensions were rejected because no Preferences control sets them.", "rationale": "Brian asked for a key with a real control. The planner verified reader and binding. Direction of flip changed to match default off.", "phase": "2"},
+    {"decision": "RUN-01 accepted on check-mode evidence after the launch step was killed by the harness.", "rationale": "Brian chose option (a).", "phase": "2"},
+    {"decision": "Executors run sequentially on the main tree, not in worktrees, for plans with no tracked-file changes.", "rationale": "Plans 02-01 to 02-05 change no tracked code. Worktree isolation adds no safety here.", "phase": "2"}
+  ],
+  "uncommitted_files": [
+    "?? .planning/phases/01-apple-silicon-build/01-PATTERNS.md (pre-existing, not from this session, leave untouched)",
+    "?? .planning/state.json (pre-existing, not from this session, leave untouched)",
+    "?? .planning/HANDOFF.json (this handoff)",
+    "?? .planning/phases/02-launch-and-run-verification/.continue-here.md (this handoff)"
+  ],
+  "next_action": "Read 02-05-PLAN.md and decisions-run03.txt, then start plan 02-05 Task 1 by asking Brian to open the built app and begin the RUN-03 GUI steps. Resume with /gsd:autonomous --only 2 or the phase 2 execute step.",
+  "context_notes": "Phase 2 is about 4 of 6 plans done. The built app (PID 46275) has been running since plan 02-01 and must stay open for 02-05. Several headless RUN-03 results are ENV-FAIL because the fixed PATH misses ruby18 and python. Those are headless-only and the GUI decides. The HTML HEADLESS-PASS is misleading, since its log shows missing support tools. The commit guard once reported develop as protected because gsd_run was not on PATH. The real query returns false, so develop is a valid working branch for this repo."
+}
