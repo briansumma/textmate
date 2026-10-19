@@ -3,16 +3,16 @@ gsd_state_version: "1.0"
 current_phase: 1
 current_phase_name: Apple Silicon Build
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-10-19T19:23:56.007Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-10-19T19:28:49.693Z"
 last_activity: 2026-10-19
 last_activity_desc: Phase 1 execution started
-state_head: dcfaca9aaaa4b0586be3a9864e0c940494e64b89
+state_head: 1c0ca4f93e2ae99f5104b4b2e0c9b8828b8aeac5
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-10-19)
 ## Current Position
 
 Phase: 1 (Apple Silicon Build) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-10-19 — Phase 1 execution started
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Plan | Duration | Tasks | Files |
 |------|----------|-------|-------|
 | Phase 01 P01 | not recorded | 3 tasks | 3 files |
+| Phase 01 P02 | not recorded | 3 tasks | 0 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,8 @@ Recent decisions affecting current work:
 - Removal scope follows the 13 decisions accepted in REQUIREMENTS.md (2026-10-19).
 - [Phase 01]: BUILD-04: APP_MIN_OS 26.7.1 on default.rave line 1; Info.plist unedited (template expansion)
 - [Phase 01]: BUILD-02: configure uses brew --prefix with /opt/homebrew fallback; checks exact dylibs before any local.rave write
+- [Phase 01]: Proof passes builddir= to configure as an environment override; README line 79 does not document it and README stays out of scope
+- [Phase 01]: Deprecated-API build warnings left unmigrated; BUILD-05 is Phase 2
 
 ### Pending Todos
 
@@ -91,6 +94,6 @@ Items acknowledged and deferred at milestone close, most recent first:
 
 ## Session Continuity
 
-Last session: 2026-10-19T19:23:55.990Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-10-19T19:28:25.651Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None

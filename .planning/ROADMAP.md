@@ -28,9 +28,9 @@ Phase 1 makes a clean arm64 build from a fresh checkout. Phase 2 proves that the
   3. The README "Building" section names `git submodule update --init --recursive`. After that command, `git submodule status | grep -c '^-'` prints `0`.
   4. `plutil -extract LSMinimumSystemVersion raw` prints `26.7.1`, and `vtool -show-build` reports minimum OS 26.7.1. The 10.12 floor is gone.
 
-**Plans**: 1/3 plans executed
+**Plans**: 2/3 plans executed
 - [x] 01-01-PLAN.md
-- [ ] 01-02-PLAN.md
+- [x] 01-02-PLAN.md
 - [ ] 01-03-PLAN.md
 
 ### Phase 2: Launch and Run Verification
@@ -77,6 +77,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Apple Silicon Build | 1/3 | In Progress | - |
+| 1. Apple Silicon Build | 2/3 | In Progress | - |
 | 2. Launch and Run Verification | 0/TBD | Not started | - |
 | 3. Remove Network Contacts and Sign | 0/TBD | Not started | - |

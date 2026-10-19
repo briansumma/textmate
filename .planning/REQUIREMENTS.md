@@ -18,7 +18,7 @@ Requirements for the personal fork. No new features are in scope. Each requireme
 
 ### Build
 
-- [ ] **BUILD-01**: Build `TextMate.app` for arm64 on the current macOS with the current Xcode from a clean checkout
+- [x] **BUILD-01**: Build `TextMate.app` for arm64 on the current macOS with the current Xcode from a clean checkout
   - Test: `ninja TextMate` exits 0. Then `lipo -archs "$(find ~/build/textmate -path '*TextMate.app/Contents/MacOS/TextMate' -print -quit)"`.
   - Pass: the build exits 0, and `lipo` prints `arm64`.
 
@@ -135,7 +135,7 @@ Which phases cover which requirements. Filled during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BUILD-01 | Phase 1 | Pending |
+| BUILD-01 | Phase 1 | Complete |
 | BUILD-02 | Phase 1 | Complete |
 | BUILD-03 | Phase 1 | Complete |
 | BUILD-04 | Phase 1 | Complete |
