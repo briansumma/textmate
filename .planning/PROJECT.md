@@ -23,10 +23,11 @@ TextMate builds for Apple Silicon, launches, opens and saves files, and runs its
 - [ ] **BUILD-05**: Deprecated APIs are migrated only where the build or a RUN test fails on the current macOS. A migration must not change behavior.
 - [ ] **RUN-01**: The built app launches on the current macOS.
 - [ ] **RUN-02**: Opening, editing, and saving a file work.
-- [ ] **RUN-03**: Each bundle in the bundle set runs its commands.
+- [ ] **RUN-03**: Each bundle in the bundle set runs its commands. Each managed-only bundle loads.
 - [ ] **RUN-04**: A bundle command whose output is HTML shows that output in the HTML output window.
 - [ ] **RUN-05**: The About window and the Preferences window open and show content. A changed preference persists.
-- [ ] **UPD-01**: The app's online update check is removed. The app does not contact `api.textmate.org` for its own update check.
+- [ ] **UPD-01**: The app contacts no `api.textmate.org` host for updates. The app update check, the bundle index poll and its checkbox, the bundle updater, the `bl` update path, and the `can_reach_host` probe are removed.
+- [ ] **PRIV-01**: The crash reporter uploads no report, and the "Submit to MacroMates" preference is removed.
 - [ ] **SIGN-01**: The built app is ad-hoc signed and runs locally without notarization.
 
 ### Out of Scope
