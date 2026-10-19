@@ -3,16 +3,16 @@ gsd_state_version: "1.0"
 current_phase: 1
 current_phase_name: Apple Silicon Build
 status: executing
-stopped_at: Roadmap created. Awaiting orchestrator approval.
-last_updated: "2026-10-19T19:20:34.418Z"
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-10-19T19:23:56.007Z"
 last_activity: 2026-10-19
-last_activity_desc: Roadmap created with 3 phases; 13 of 13 v1 requirements mapped
-state_head: b46e5ae7dc453fbdc0102699b51c093dd68a8d2c
+last_activity_desc: Phase 1 execution started
+state_head: dcfaca9aaaa4b0586be3a9864e0c940494e64b89
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 3
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -23,14 +23,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-19)
 
 **Core value:** TextMate builds for Apple Silicon, launches, opens and saves files, and runs its bundle commands on the current macOS. Other working features keep working.
-**Current focus:** Phase 1: Apple Silicon Build
+**Current focus:** Phase 1 — Apple Silicon Build
 
 ## Current Position
 
-Phase: 1 (Apple Silicon Build) — READY TO EXECUTE
-Plan: 0 of TBD in current phase
+Phase: 1 (Apple Silicon Build) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-10-19 — Roadmap created with 3 phases; 13 of 13 v1 requirements mapped
+Last activity: 2026-10-19 — Phase 1 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -52,6 +52,11 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: none yet
 
 *Updated after each plan completion*
+**Per-Plan Metrics:**
+
+| Plan | Duration | Tasks | Files |
+|------|----------|-------|-------|
+| Phase 01 P01 | not recorded | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -64,6 +69,8 @@ Recent decisions affecting current work:
 - Roadmap: BUILD-05 sits in Phase 2 because its pass rule uses the RUN tests.
 - Roadmap: SIGN-01 sits in Phase 3 because it signs the final build after the removals.
 - Removal scope follows the 13 decisions accepted in REQUIREMENTS.md (2026-10-19).
+- [Phase 01]: BUILD-04: APP_MIN_OS 26.7.1 on default.rave line 1; Info.plist unedited (template expansion)
+- [Phase 01]: BUILD-02: configure uses brew --prefix with /opt/homebrew fallback; checks exact dylibs before any local.rave write
 
 ### Pending Todos
 
@@ -84,6 +91,6 @@ Items acknowledged and deferred at milestone close, most recent first:
 
 ## Session Continuity
 
-Last session: 2026-10-19
-Stopped at: Roadmap created. Awaiting orchestrator approval.
+Last session: 2026-10-19T19:23:55.990Z
+Stopped at: Completed 01-01-PLAN.md
 Resume file: None
