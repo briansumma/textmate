@@ -44,6 +44,7 @@ After installing dependencies, make sure you have a full checkout (including sub
 ```sh
 git clone --recursive https://github.com/textmate/textmate.git
 cd textmate
+git submodule update --init --recursive
 ./configure && ninja TextMate/run
 ```
 
